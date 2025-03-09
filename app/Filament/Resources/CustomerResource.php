@@ -12,9 +12,12 @@ use Illuminate\Support\Facades\Auth;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\ExportBulkAction;
+use App\Filament\Exports\CustomerExporter;
 use App\Filament\Resources\CustomerResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CustomerResource\RelationManagers\PointsRelationManager;
+use Filament\Actions\Exports\Enums\ExportFormat;
 
 class CustomerResource extends Resource
 {
@@ -64,6 +67,13 @@ class CustomerResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            // ->headerActions([
+            //     ExportAction::make()
+            //         ->exporter(CustomerExporter::class)
+            //         ->formats([
+            //             ExportFormat::Xlsx,
+            //         ])
+            // ])
             ->filters([
                 //
             ])
@@ -74,6 +84,11 @@ class CustomerResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+                ExportBulkAction::make()
+                ->exporter(CustomerExporter::class)
+                ->formats([
+                    ExportFormat::Xlsx,
+                ])
             ]);
     }
 
