@@ -1,66 +1,110 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+```
+# Business Loyalty Management Portal
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Table of Contents
+- [Overview](#overview)
+- [Setup Instructions](#setup-instructions)
+- [Seeding the Database](#seeding-the-database)
+- [Project Structure](#project-structure)
+  - [Authentication System](#authentication-system)
+  - [Admin Dashboard](#admin-dashboard)
+  - [Customer Management](#customer-management)
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Overview
+This project is a simplified Business Loyalty Management Portal built using the **TALL stack** (Tailwind CSS, Alpine.js, Laravel, Livewire) with **FilamentPHP** as the admin panel. The system allows business owners to manage customers and loyalty points effectively.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## URL (if using Laravel Herd)
+www.crm.test/admin
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Setup Instructions
+Follow these steps to set up the project locally:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. **Clone the Repository:**
+   ```bash
+   git clone <repository-url>
+   cd project-folder
+   ```
 
-## Laravel Sponsors
+2. **Install Dependencies:**
+   ```bash
+   composer install
+   npm install
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3. **Set Up Environment Variables:**
+   ```bash
+   cp .env.example .env
+   ```
+   - Update the `.env` file with database credentials.
 
-### Premium Partners
+4. **Generate Application Key:**
+   ```bash
+   php artisan key:generate
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+5. **Run Database Migrations:**
+   ```bash
+   php artisan migrate
+   ```
 
-## Contributing
+6. **Start the Development Server:**
+   ```bash
+   npm run dev
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## Seeding the Database
+To add sample data for testing, run:
+```bash
+php artisan make:filament-user
+php artisan db:seed
+```
+This will populate the database with default customers and points.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## Project Structure
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Authentication System
+- Implemented using **Filament authentication**.
+- Business owners can register and log in using their email and password.
 
-## License
+### Admin Dashboard
+- Built with **FilamentPHP**.
+- Displays key metrics:
+  - **Total number of customers** (card widget)
+  - **Total points issued** (stats widget)
+  - **Recent point transactions** (table widget)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Customer Management
+- Created a **Filament Resource** for customers.
+- Features:
+  - List view with **search, filters, and bulk actions**.
+  - Form view for **adding/editing customers**.
+  - **Relation manager** for point transactions.
+  - **Custom actions** for issuing/deducting points.
+- Required fields for customers:
+  - Name
+  - Email
+  - Phone
+  - **Total Points (computed dynamically)**
+- Implemented **point transaction history** using tables.
+
+
+### Bonus
+- Implement export functionality for bulk customer management.
+
+---
+### Issues 
+- When developing this project, I have problem on the relationship of the point and the customer. Since I already create the table between the 2 of them, i create with the idea of one to many relationship, where 1 customer will have many points. But relation manager are best suited for many to many relationship, especially the attach and detach function on the relation manager. Instead of redo my database structure, I decided to manually create new action for the attach and detach point.
+
+This project showcases proficiency in the **TALL stack** and demonstrates best practices in Laravel, Livewire, and FilamentPHP development.
+
+```
